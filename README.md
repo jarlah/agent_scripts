@@ -7,7 +7,7 @@ Run [Claude Code](https://github.com/anthropics/claude-code) in a disposable Doc
 - Isolate Claude Code from the host filesystem — only the target directory is mounted.
 - Pick a language toolchain per session (Elixir, Rust, …) without polluting the host.
 - Reuse your existing host login read-only when available, or spin up a throwaway container and log in fresh.
-- Opinionated defaults: Claude runs with `--dangerously-skip-permissions` (yolo), inside a rootless image, and as the host user so mounted files stay host-owned.
+- Opinionated defaults: Claude runs with `--dangerously-skip-permissions` (yolo), inside a rootless image, and as the host user so files Claude writes stay host-owned.
 
 ## Requirements
 
