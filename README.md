@@ -60,7 +60,7 @@ Each toolchain is a Dockerfile in `dockerfiles/` that builds on top of `claude-c
 
 ### Adding a toolchain
 
-Drop `<name>.Dockerfile` into `dockerfiles/`, starting from `FROM claude-code-base`, and run with `-t <name>`. It will show up in `-h` automatically.
+Drop `<name>.Dockerfile` into `dockerfiles/`, starting from `FROM docker.io/library/claude-code-base`, and run with `-t <name>`. It will show up in `-h` automatically.
 
 ## Layout
 

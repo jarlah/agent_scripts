@@ -93,11 +93,17 @@ fi
 echo "Starter Claude ($TOOLCHAIN) i: $TARGET_DIR (ReadOnly: ${READONLY:-false})"
 
 USER_ARGS=(--user "$(id -u):$(id -g)")
-if docker --version 2>&1 | grep -qi podman; then
+DOCKER_VERSION_OUTPUT=$(docker --version 2>&1 || true)
+if [[ "$DOCKER_VERSION_OUTPUT" == *[Pp]odman* ]]; then
     # Rootless podman: map container's `node` user (uid/gid 1000) to host user
     # so bind-mounted files keep host ownership. Passing --user with host IDs
     # breaks setgroups in the user namespace.
-    USER_ARGS=(--userns=keep-id:uid=1000,gid=1000)
+    #
+    # --group-add keep-groups skips setgroups() in crun (via the
+    # run.oci.keep_original_groups=1 annotation). Needed on LDAP/AD-joined
+    # hosts where the user has supplementary GIDs outside the /etc/subgid
+    # range — otherwise crun fails with `setgroups: Invalid argument`.
+    USER_ARGS=(--userns=keep-id:uid=1000,gid=1000 --group-add keep-groups)
 fi
 
 docker run -it \
