@@ -91,8 +91,9 @@ source "$AGENT_PLUGIN"
 
 cleanup() {
     if declare -F agent_cleanup >/dev/null; then
-        agent_cleanup
+        agent_cleanup || true
     fi
+    return 0
 }
 trap cleanup EXIT
 
