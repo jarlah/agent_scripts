@@ -56,6 +56,7 @@ Each toolchain is a Dockerfile in `dockerfiles/` that builds on top of `claude-c
 | `elixir` | Erlang/OTP, Elixir, hex, rebar |
 | `rust` | Rust (stable, minimal) + common native build deps (OpenSSL, ALSA, udev, Wayland, X11) |
 | `java` | Eclipse Temurin JDK 24 + Maven 3.9.9 |
+| `node` | Node 20 (prepended to `PATH`, overrides the base Node 22) |
 
 ### Adding a toolchain
 
@@ -70,4 +71,5 @@ dockerfiles/
   elixir.Dockerfile
   rust.Dockerfile
   java.Dockerfile
+  node.Dockerfile
 ```
