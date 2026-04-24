@@ -17,8 +17,12 @@ agent_prepare_mounts() {
         echo "Ingen Gemini-konfig funnet — starter throwaway-container, logg inn inne i containeren."
     fi
 
-    [ -n "${GEMINI_API_KEY:-}" ] && AGENT_DOCKER_ARGS+=(-e "GEMINI_API_KEY=$GEMINI_API_KEY")
-    [ -n "${GOOGLE_API_KEY:-}" ] && AGENT_DOCKER_ARGS+=(-e "GOOGLE_API_KEY=$GOOGLE_API_KEY")
+    if [ -n "${GEMINI_API_KEY:-}" ]; then
+        AGENT_DOCKER_ARGS+=(-e "GEMINI_API_KEY=$GEMINI_API_KEY")
+    fi
+    if [ -n "${GOOGLE_API_KEY:-}" ]; then
+        AGENT_DOCKER_ARGS+=(-e "GOOGLE_API_KEY=$GOOGLE_API_KEY")
+    fi
 }
 
 agent_cleanup() {

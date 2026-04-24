@@ -14,16 +14,19 @@ RUN apt-get update \
 COPY --from=elixir-src /usr/local/lib/erlang /usr/local/lib/erlang
 COPY --from=elixir-src /usr/local/lib/elixir /usr/local/lib/elixir
 
-RUN ln -s /usr/local/lib/erlang/bin/erl /usr/local/bin/erl \
-    && ln -s /usr/local/lib/erlang/bin/erlc /usr/local/bin/erlc \
-    && ln -s /usr/local/lib/erlang/bin/escript /usr/local/bin/escript \
-    && ln -s /usr/local/lib/erlang/bin/dialyzer /usr/local/bin/dialyzer \
-    && ln -s /usr/local/lib/erlang/bin/ct_run /usr/local/bin/ct_run \
-    && ln -s /usr/local/lib/erlang/bin/typer /usr/local/bin/typer \
-    && ln -s /usr/local/lib/elixir/bin/elixir /usr/local/bin/elixir \
-    && ln -s /usr/local/lib/elixir/bin/elixirc /usr/local/bin/elixirc \
-    && ln -s /usr/local/lib/elixir/bin/iex /usr/local/bin/iex \
-    && ln -s /usr/local/lib/elixir/bin/mix /usr/local/bin/mix
+# -f: aider's base image (python:3.12-slim + aider-chat) already ships a
+# /usr/local/bin/typer from the Python typer CLI library. Overwrite it with
+# Erlang's typer — Elixir/Erlang tooling here takes precedence over Python.
+RUN ln -sf /usr/local/lib/erlang/bin/erl /usr/local/bin/erl \
+    && ln -sf /usr/local/lib/erlang/bin/erlc /usr/local/bin/erlc \
+    && ln -sf /usr/local/lib/erlang/bin/escript /usr/local/bin/escript \
+    && ln -sf /usr/local/lib/erlang/bin/dialyzer /usr/local/bin/dialyzer \
+    && ln -sf /usr/local/lib/erlang/bin/ct_run /usr/local/bin/ct_run \
+    && ln -sf /usr/local/lib/erlang/bin/typer /usr/local/bin/typer \
+    && ln -sf /usr/local/lib/elixir/bin/elixir /usr/local/bin/elixir \
+    && ln -sf /usr/local/lib/elixir/bin/elixirc /usr/local/bin/elixirc \
+    && ln -sf /usr/local/lib/elixir/bin/iex /usr/local/bin/iex \
+    && ln -sf /usr/local/lib/elixir/bin/mix /usr/local/bin/mix
 
 USER node
 RUN mix local.hex --force && mix local.rebar --force
