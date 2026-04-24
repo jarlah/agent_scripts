@@ -7,6 +7,8 @@ READONLY=""
 TOOLCHAIN="base"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKERFILES_DIR="$SCRIPT_DIR/dockerfiles"
+# shellcheck source=check_sensitive.sh
+source "$SCRIPT_DIR/check_sensitive.sh"
 HOST_CLAUDE_DIR="${HOME}/.claude"
 HOST_CLAUDE_CONFIG="${HOME}/.claude.json"
 CREDENTIALS_FILE="$HOST_CLAUDE_DIR/.credentials.json"
@@ -38,6 +40,8 @@ if [ ! -f "$DOCKERFILE" ]; then
     echo "Feil: fant ikke $DOCKERFILE"
     usage
 fi
+
+check_sensitive_files "$TARGET_DIR" || exit 1
 
 cleanup() {
     [ -n "${TMP_CLAUDE_DIR:-}" ] && [ -d "$TMP_CLAUDE_DIR" ] && rm -rf "$TMP_CLAUDE_DIR"
