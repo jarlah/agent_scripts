@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         runtime: [docker, podman]
-        agent: [claude, codex, gemini, aider]
+        agent: [claude, codex, gemini, aider, opencode]
         toolchain: [base, elixir, java, node, rust]
     env:
       RUNTIME: ${{ matrix.runtime }}
@@ -24,10 +24,11 @@ jobs:
       - name: Smoke-test agent CLI
         run: |
           case "${{ matrix.agent }}" in
-            claude) cli="claude --version" ;;
-            codex)  cli="codex --version" ;;
-            gemini) cli="gemini --version" ;;
-            aider)  cli="aider --version" ;;
+            claude)   cli="claude --version" ;;
+            codex)    cli="codex --version" ;;
+            gemini)   cli="gemini --version" ;;
+            aider)    cli="aider --version" ;;
+            opencode) cli="opencode --version" ;;
           esac
           ./run_agent.sh \
             -a "${{ matrix.agent }}" \
